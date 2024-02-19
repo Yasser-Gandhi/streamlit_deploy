@@ -1,0 +1,13 @@
+import io
+# Subir el archivo CSV
+uploaded = files.upload()
+
+# Obtener el nombre del archivo cargado
+csv_filename = next(iter(uploaded))
+
+# Leer el archivo CSV en un DataFrame de Pandas
+df = pd.read_csv(io.StringIO(uploaded[csv_filename].decode('utf-8')))
+
+# Migración a Firestore
+for index, row in df.iterrows():
+    db.collection("peliculas").add(row.to_dict())
